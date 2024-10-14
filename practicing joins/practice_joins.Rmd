@@ -109,8 +109,11 @@ data_missing_ids <- data_age_gender_subset %>%
   full_join(data_selfreport_summary_subset, by = "unique_id")
 
 data_missing_ids <- data_missing_ids %>%
-  anti_join(data_unique_id_subset, by = "unique_id")
+  anti_join(data_unique_id_subset, by = "unique_id") %>% 
+  select(unique_id) %>% #we only need unique id for the answer
+  distinct(unique_id) # to sort out duplicates
 
+  
 ```
 
 

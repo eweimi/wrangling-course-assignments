@@ -1,7 +1,7 @@
 ---
 title: "Evaluations of positive and negative stimuli using the Affective Misattribution Procedure (AMP) and self-reports"
 subtitle: "Data processing"
-author: "Template: Ian Hussey; content: [Student name]"
+author: "Template: Ian Hussey; content: [Elin Weimer]"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
@@ -135,6 +135,24 @@ dat_gender <- data_demographics_raw |>
 
 ## AMP
 
+# Get data
+
+```{r}
+
+data_unique_id_subset <- read_csv("data_unique_id_subset.csv")
+data_age_gender_subset <- read_csv("data_age_gender_subset.csv")
+data_amp_summary_subset <- read_csv("data_amp_summary_subset.csv")
+data_selfreport_summary_subset <- read_csv("data_selfreport_summary_subset.csv")
+data_amp_raw <- read_csv("data_amp_raw.csv")
+data_selfreport_raw <- read_csv("data_selfreport_raw.csv")
+
+nrow(data_unique_id_subset)
+nrow(data_age_gender_subset)
+nrow(data_amp_summary_subset)
+nrow(data_selfreport_summary_subset)
+
+```
+
 ### Completeness
 
 Create an exclusion variable `exclude_amp_completeness` based on the AMP having the right number of trials.
@@ -212,10 +230,40 @@ data_selfreport_tidied <- data_selfreport_raw |>
 TODO - 14/10
 
 - replace all non 1-7 numbers in `response` with NA
+
+```{r}
+data_selfreport_tidied2 <- data_selfreport_tidied %>% 
+  mutate(response = as.numeric(response))
+```
+
 - count number of unique_ids with correct/wrong number of responses
+```{r}
+data_selfreport_tidied2 %>% 
+  count(unique_id, name = "num_trials") %>% 
+  count(num_trials, name = "num_participants")
+ 
+```
+
 - Exclude them
-- check your exclusions worked.
+```{r}
+data_selfreport_complete <- data_selfreport_tidied2 %>% 
+  count(unique_id, name = "num_trials") %>% 
+  filter(num_trials == 3)
+ 
+```
+
+- check your exclusions worked. FRAGE!!! warum kommt beim n jetzt 1 und nicht 3????
+```{r}
+data_selfreport_complete %>% 
+  count(unique_id)
+
+```
+
 - use: mutate, group_by, summarize, _join
+
+
+
+
 
 # Score measures
 

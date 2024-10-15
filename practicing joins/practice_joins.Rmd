@@ -116,5 +116,5 @@ data_missing_ids <- data_missing_ids %>%
   
 ```
 
-
+Be careful with full joins because you can end with loads of duplicates
 

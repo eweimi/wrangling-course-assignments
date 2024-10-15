@@ -1662,7 +1662,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Practicing joins</h1>
 <h4 class="author">Template: Ian Hussey; content: [Elin Weimer]</h4>
-<h4 class="date">14 October, 2024</h4>
+<h4 class="date">15 October, 2024</h4>
 
 </div>
 
@@ -1749,6 +1749,8 @@ Which? Implement them.</p>
 <span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="fu">anti_join</span>(data_unique_id_subset, <span class="at">by =</span> <span class="st">&quot;unique_id&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="fu">select</span>(unique_id) <span class="sc">%&gt;%</span> <span class="co">#we only need unique id for the answer</span></span>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="fu">distinct</span>(unique_id) <span class="co"># to sort out duplicates</span></span></code></pre></div>
+<p>Be careful with full joins because you can end with loads of
+duplicates</p>
 </div>
 </div>
 

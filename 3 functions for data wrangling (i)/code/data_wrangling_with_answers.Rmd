@@ -545,6 +545,8 @@ data_selfreport_filtered %>%
 
 data_selfreport_tidied <- data_selfreport_filtered %>% 
   mutate( response = as.numeric(response))
+
+#mutate( response = ifelse (response %in% seq(1:7), response, NA))
   
   
  #sanity check
@@ -746,7 +748,7 @@ Using only participants with complete data, calculate the mean and SD of all par
 #  count(unique_id, name = "n_trials") %>% 
  # count(n_trials, name = "n_participants")
   
-# i am lost here it doesnt seem to count like it used to ... so icouldnt exclude participants with complete data
+# i am lost here it doesnt seem to count like it used to ... so icouldnt exclude participants with incomplete data
 
 data_selfreport_new <- data_selfreport_tidied %>% 
   group_by(unique_id) %>% 

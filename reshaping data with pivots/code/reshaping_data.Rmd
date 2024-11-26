@@ -194,7 +194,14 @@ data_item_and_sum_scores <- data_wide_again %>%
 Wrangle the demographics data included in this exercise more efficiently by reshaping it into wide format. Before, we used filter() to wrangle the age and gender data separately.
 
 ```{r}
-data <- read_csv("data_demographics_raw.csv")
+data <- read_csv("../data/raw/data_demographics_raw.csv")
+
+data_demo_wide <- data %>% 
+   pivot_wider(names_from = trialcode,
+              values_from = response) %>% 
+  select(subject, age, gender) %>% 
+  #How do i get rid of the NAs?
+  
 
 
 ```

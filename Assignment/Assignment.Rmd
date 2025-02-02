@@ -1,0 +1,131 @@
+---
+title: "Assignment"
+author: "Elin Weimer"
+date: "2025-02-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+
+
+```{r}
+###Good Plot###
+#Data Source: World Bank's indicator TX.VAL.TECH.MF.ZS, which represents high-technology exports as a #percentage of manufactured exports. (data.worldbank.org) 
+
+# load packages
+library(tidyverse)
+library(WDI)
+
+# Define the indicator for high-technology exports (% of manufactured exports)
+indicator <- "TX.VAL.TECH.MF.ZS"
+
+# Specify selected countries: South Korea, Germany, USA
+countries <- c("KOR", "DEU", "USA")  
+
+# Fetch data from the World Bank API (only from 2010 to 2020)
+tech_exports <- WDI(indicator = indicator, country = countries, start = 2010, end = 2020)
+
+# Data Wrangling
+tech_exports_clean <- tech_exports %>%
+  drop_na() %>%
+  rename(
+    country = country,
+    year = year,
+    high_tech_exports = TX.VAL.TECH.MF.ZS
+  )
+
+# Create plot
+ggplot(tech_exports_clean, aes(x = year, y = high_tech_exports, color = country)) +
+  geom_line(size = 1.2) +         
+  geom_point(size = 2) +          
+  scale_x_continuous(limits = c(2010, 2020), breaks = seq(2010, 2020, by = 2)) +  
+  labs(
+    title = "High-Technology Exports as a % of Manufactured Exports (2010-2020)",
+    x = "Year",
+    y = "High-Technology Exports (%)",
+    color = "Country"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
+
+```
+
+Why is it a good plot?
+- Titles and axis labels provide context to the data
+- consistent scales and distinguishable colours/ simple design allows easy comparison between countries
+- The plot shows trends over time for each country
+
+
+
+
+```{r}
+###Bad Plot### 
+#(same Data as above)
+
+# load required packages
+library(ggplot2)
+library(WDI)
+library(RColorBrewer)
+
+# Fetch real high-tech export data (2010-2020) for Korea, Germany, USA
+tech_exports <- WDI(indicator = "TX.VAL.TECH.MF.ZS", country = c("KOR", "DEU", "USA"), start = 2010, end = 2020)
+
+# Data wrangling
+tech_exports_clean <- tech_exports %>%
+  drop_na() %>%
+  rename(
+    country = country,
+    year = year,
+    high_tech_exports = TX.VAL.TECH.MF.ZS
+  )
+
+# Generate bad color palette
+ugly_colors <- colorRampPalette(brewer.pal(9, "Spectral"))(15)  
+
+# Create bar chart
+ggplot(tech_exports_clean, aes(x = as.factor(year), y = high_tech_exports, fill = country)) +
+  geom_bar(stat = "identity", position = "dodge", width = runif(nrow(tech_exports_clean), 0.1, 1.2)) + #random bar widths
+  scale_fill_manual(values = ugly_colors) + 
+  theme(
+    panel.background = element_rect(fill = "limegreen"), 
+    plot.background = element_rect(fill = "hotpink"),  
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, size = 5, color = "purple"),   
+    axis.text.y = element_text(size = 20, face = "bold", color = "orange"),  
+    legend.title = element_text(size = 18, color = "blue") 
+  ) +
+  labs(
+    title = "High-Tech Export Chart (2010-2020)",
+    x = "Year",
+    y = "Exports % ",
+    fill = "Country"
+  )
+
+```
+Why is it a bad plot?
+- colours used are indistinguishable and distracting
+- Barplot is generally not a good idea to visualize this type of data (way too much information on one bar, we can not see a trend over time for the different countries)
+- bars have irregular widths which makes it even more confusing
+- x axis ist not readable
+- title and axis labels are generally not very clear and don't provide context to the data
+
+
